@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meow Crust — Artisan Bakery</title>
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -34,8 +35,8 @@
 
   <!-- SPOTLIGHT SLIDESHOW -->
   <section id="spotlight" class="section slideshow-section">
-    <h2 class="section-title" data-i18n="spotTitle">Fresh From the Oven</h2>
-    <div class="slideshow" id="slideshow">
+    <h2 class="section-title reveal" data-i18n="spotTitle">Fresh From the Oven</h2>
+    <div class="slideshow reveal" id="slideshow">
       <button class="slide-arrow" id="slidePrev" aria-label="Previous">&lsaquo;</button>
       <div class="slideshow-track" id="slideshowTrack"></div>
       <button class="slide-arrow slide-arrow-next" id="slideNext" aria-label="Next">&rsaquo;</button>
@@ -44,28 +45,36 @@
 
   <!-- ABOUT -->
   <section id="about" class="section about-section">
-    <div class="about-content">
+    <div class="about-content reveal">
+      <!-- LEFT: new artwork goes in this container (drop an <img> in here) -->
+      <div class="about-art">
+        <span class="about-art-hint">Artwork</span>
+      </div>
       <div class="about-text">
         <h2 class="section-title" data-i18n="aboutTitle">Our Story</h2>
-        <p data-i18n="aboutP1">Hearth &amp; Crumb began with a simple belief: good bread takes time. We mill our grains in-house, culture our own sourdough starters, and bake everything in small batches each morning.</p>
+        <p data-i18n="aboutP1">Meow Crust began with a simple belief: good bread takes time. We mill our grains in-house, culture our own sourdough starters, and bake everything in small batches each morning.</p>
         <p data-i18n="aboutP2">Everything you taste is made from whole grains, cultured butter, real honey, and patience — because the flavor is worth the wait.</p>
-      </div>
-      <div class="about-stats">
-        <div class="stat">
-          <span class="stat-number">40+</span>
-          <span class="stat-label" data-i18n="stat1">Daily Bakes</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">4.9</span>
-          <span class="stat-label" data-i18n="stat2">Average Rating</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">12K+</span>
-          <span class="stat-label" data-i18n="stat3">Happy Regulars</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">8</span>
-          <span class="stat-label" data-i18n="stat4">Years Baking</span>
+        <div class="about-stats">
+          <div class="stat">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10c0-3.6 3.6-6 8-6s8 2.4 8 6v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7z"/><path d="M4 10h16"/><path d="M9 6.5 11 8.5"/><path d="M14 6.5 16 8.5"/></svg>
+            <span class="stat-number">40+</span>
+            <span class="stat-label" data-i18n="stat1">Daily Bakes</span>
+          </div>
+          <div class="stat">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2-5.6-3.2-5.6 3.2 1.3-6.2L3 9.5l6.3-.7L12 3z"/></svg>
+            <span class="stat-number">4.9</span>
+            <span class="stat-label" data-i18n="stat2">Average Rating</span>
+          </div>
+          <div class="stat">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12.5c2.5 0 4.5 1.6 4.5 3.8 0 1.9-1.6 3.2-4.5 3.2s-4.5-1.3-4.5-3.2c0-2.2 2-3.8 4.5-3.8z"/><circle cx="7" cy="9.5" r="1.5"/><circle cx="10.5" cy="7.4" r="1.5"/><circle cx="13.5" cy="7.4" r="1.5"/><circle cx="17" cy="9.5" r="1.5"/></svg>
+            <span class="stat-number">12K+</span>
+            <span class="stat-label" data-i18n="stat3">Happy Regulars</span>
+          </div>
+          <div class="stat">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.7A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg>
+            <span class="stat-number">8</span>
+            <span class="stat-label" data-i18n="stat4">Years Baking</span>
+          </div>
         </div>
       </div>
     </div>
@@ -73,8 +82,9 @@
 
   <!-- CONTACT -->
   <section id="contact" class="section contact-section">
-    <h2 class="section-title" data-i18n="contactTitle">Get in Touch</h2>
-    <div class="contact-grid">
+    <div class="float-paws" aria-hidden="true"></div>
+    <h2 class="section-title reveal" data-i18n="contactTitle">Get in Touch</h2>
+    <div class="contact-grid reveal">
       <div class="contact-info">
         <p data-i18n="contactAddr"><strong>📍</strong> 42 Grain Mill Lane, Old Town</p>
         <p data-i18n="contactPhone"><strong>📞</strong> (555) 867-5309</p>
@@ -109,7 +119,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p data-i18n="footerCopy">&copy; 2026 Meow Crust Artisan Bakery. Baked with patience.</p>
+    <p data-i18n="footerCopy" style="opacity: 0.5;">&copy; 2026 Meow Crust Artisan Bakery. Baked with patience.</p>
   </footer>
 
   <script src="script.js"></script>
