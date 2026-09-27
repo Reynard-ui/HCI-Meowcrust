@@ -6,7 +6,8 @@ const menuItems = [
     category: "breads",
     price: 8.50,
     description: "A classic country loaf crowned with a thick rind of coarse salt — tender, slightly tangy crumb and a crackling golden crust.",
-    image: "assets/salt-bread.jpg"
+    image: "assets/salt-bread.jpg",
+    stock: 3
   },
   {
     id: 2,
@@ -54,7 +55,8 @@ const menuItems = [
     category: "pastries",
     price: 4.75,
     description: "Crisp puff pastry cups filled with spiced apple compote and a swirl of vanilla cream — a pocket-sized orchard bite.",
-    image: "assets/mini-apple-pastry.jpg"
+    image: "assets/mini-apple-pastry.jpg",
+    stock: 1
   },
   {
     id: 11,
@@ -70,7 +72,8 @@ const menuItems = [
     category: "cakes",
     price: 6.50,
     description: "Silky baked cheesecake crowned with a glossy strawberry compote and fresh berry halve on a buttery shortbread base.",
-    image: "assets/strawberry-cheesecake.jpg"
+    image: "assets/strawberry-cheesecake.jpg",
+    stock: 2
   },
   {
     id: 13,
@@ -105,6 +108,14 @@ const menuItems = [
     image: "assets/red-raspberry-pie.jpg"
   }
 ];
+
+// Give every menu item a stock figure. The three items with a hardcoded
+// stock (Salt Bread, Mini Apple Pastry, Strawberry Cheesecake) keep that
+// exact value; all the others get a random count between 1 and 15 on each
+// page load, so the Details pop-up can always report how many are left.
+menuItems.forEach(item => {
+  if (item.stock == null) item.stock = Math.floor(Math.random() * 15) + 1;
+});
 
 /* ===== i18n: EN / ID ===== */
 const LANG_KEY = 'meowcrust_lang';
@@ -146,7 +157,7 @@ function menuDesc(id) {
 const I18N = {
   en: {
     navBreads: 'Bread', navPastries: 'Pastry', navPies: 'Pie',
-    navCakes: 'Cake', navMenu: 'Menu',
+    navCakes: 'Cake', navMenu: 'Menu', navAll: 'All',
     searchPh: 'Search the menu…',
     resultsLabel: 'results',
     searchEmpty: 'No treats match "%s" — try a different word.',
@@ -157,7 +168,7 @@ const I18N = {
     heroCta: 'Browse the Menu', heroStory: 'Our Story',
     spotTitle: 'Fresh From the Oven',
     aboutTitle: 'Our Story',
-    aboutP1: 'Hearth & Crumb began with a simple belief: good bread takes time. We mill our grains in-house, culture our own sourdough starters, and bake everything in small batches each morning.',
+    aboutP1: 'Meow Crust began with a simple belief: good bread takes time. We mill our grains in-house, culture our own sourdough starters, and bake everything in small batches each morning.',
     aboutP2: 'Everything you taste is made from whole grains, cultured butter, real honey, and patience — because the flavor is worth the wait.',
     stat1: 'Daily Bakes', stat2: 'Average Rating', stat3: 'Happy Regulars', stat4: 'Years Baking',
     contactTitle: 'Get in Touch',
@@ -167,7 +178,7 @@ const I18N = {
     contactHours: '🕐 Mon–Sat: 7am – 6pm · Sun: 8am – 4pm',
     phName: 'Your Name', phEmail: 'Your Email', phMsg: 'Your Message', sendMsg: 'Send Message',
     basketTitle: '🧺 Your Basket', basketEmpty: 'Your basket is empty.',
-    total: 'Total:', checkout: 'Checkout',
+    total: 'Total:', checkout: 'Checkout', qtyLabel: 'Qty',
     footerCopy: '© 2026 Meow Crust Artisan Bakery. Baked with patience.',
     backHome: '← Back to Home',
     footerStoryTitle: 'Our Story',
@@ -193,11 +204,12 @@ const I18N = {
     favEmpty: 'No favorites yet. Tap the heart on any treat to save it here.',
     addBtn: 'Add to Basket', each: 'each',
     menuTitle: 'Our Menu', favsTitle: 'My Favorites',
-    ctaBreads: 'See Breads', ctaPastries: 'See Pastries', ctaCakes: 'See Cakes', ctaPies: 'See Pies'
+    ctaBreads: 'See Breads', ctaPastries: 'See Pastries', ctaCakes: 'See Cakes', ctaPies: 'See Pies',
+    stockNote: 'Only %s left in stock'
   },
   id: {
     navBreads: 'Roti', navPastries: 'Pastry', navPies: 'Pai',
-    navCakes: 'Kue', navMenu: 'Menu',
+    navCakes: 'Kue', navMenu: 'Menu', navAll: 'Semua',
     searchPh: 'Cari di menu…',
     resultsLabel: 'hasil',
     searchEmpty: 'Tidak ada menu yang cocok dengan "%s" — coba kata lain.',
@@ -218,7 +230,7 @@ const I18N = {
     contactHours: '🕐 Sen–Sab: 7 pagi – 6 sore · Min: 8 pagi – 4 sore',
     phName: 'Nama Anda', phEmail: 'Email Anda', phMsg: 'Pesan Anda', sendMsg: 'Kirim Pesan',
     basketTitle: '🧺 Keranjang Anda', basketEmpty: 'Keranjang Anda masih kosong.',
-    total: 'Total:', checkout: 'Checkout',
+    total: 'Total:', checkout: 'Checkout', qtyLabel: 'Jumlah',
     footerCopy: '© 2026 Meow Crust Artisan Bakery. Dipanggang dengan kesabaran.',
     backHome: '← Kembali ke Beranda',
     footerStoryTitle: 'Cerita Kami',
@@ -244,7 +256,8 @@ const I18N = {
     favEmpty: 'Belum ada favorit. Tekan ikon hati di setiap menu untuk menyimpannya di sini.',
     addBtn: 'Tambah ke Keranjang', each: 'per item',
     menuTitle: 'Menu Kami', favsTitle: 'Favorit Saya',
-    ctaBreads: 'Lihat Roti', ctaPastries: 'Lihat Pastry', ctaCakes: 'Lihat Kue', ctaPies: 'Lihat Pai'
+    ctaBreads: 'Lihat Roti', ctaPastries: 'Lihat Pastry', ctaCakes: 'Lihat Kue', ctaPies: 'Lihat Pai',
+    stockNote: 'Hanya tersisa %s'
   }
 };
 
@@ -347,10 +360,11 @@ function renderMenu(filter = 'all') {
     items = menuItems.filter(item => item.category === filter);
   }
 
-  // Live search narrows whatever view is showing (category, favorites, or all)
+  // Live search: whatever category view is open, a query searches the
+  // ENTIRE menu — typing narrows all items, not just the active category.
   const q = searchQuery.trim().toLowerCase();
   if (q) {
-    items = items.filter(item => {
+    items = menuItems.filter(item => {
       const hay = `${menuName(item.id)} ${menuDesc(item.id)} ${item.category}`.toLowerCase();
       return q.split(/\s+/).every(word => hay.includes(word));
     });
@@ -363,18 +377,22 @@ function renderMenu(filter = 'all') {
     return;
   }
 
-  menuGrid.innerHTML = items.map(item => `
-    <div class="menu-item" data-id="${item.id}">
+  menuGrid.innerHTML = items.map((item, n) => `
+    <div class="menu-item" data-id="${item.id}" style="--i:${n}">
       <div class="menu-item-img">
         <img src="${item.image}" alt="${menuName(item.id)}" loading="lazy" />
         <button class="fav-btn${favorites.has(item.id) ? ' active' : ''}" onclick="toggleFavorite(${item.id})" aria-label="Toggle favorite" title="${t('navFav')}">${favorites.has(item.id) ? '♥' : '♡'}</button>
       </div>
       <div class="menu-item-body">
         <h3>${menuName(item.id)}</h3>
+        ${item.stock < 5 ? `<p class="stock-note">${t('stockNote', item.stock)}</p>` : ''}
         <p class="description">${menuDesc(item.id)}</p>
         <div class="menu-item-footer">
           <span class="price">$${item.price.toFixed(2)}</span>
-          <button class="add-btn" onclick="addToCart(${item.id})">${t('addBtn')}</button>
+          <div class="menu-item-actions">
+            <button class="details-btn" onclick="showDetails(${item.id})">Details</button>
+            <button class="add-btn" onclick="addToCart(${item.id})">${t('addBtn')}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -396,6 +414,25 @@ function addToCart(id) {
   saveCart();
   updateCartUI();
   showToast(t('toastAdded', menuName(item.id)));
+}
+
+/* ===== DETAILS POP-UP (per-item: name / description / stock / price) ===== */
+function showDetails(id) {
+  const item = menuItems.find(i => i.id === id);
+  const overlay = document.getElementById('detailsModal');
+  if (!item || !overlay) return;
+
+  document.getElementById('detailsName').textContent = menuName(item.id);
+  document.getElementById('detailsDesc').textContent = menuDesc(item.id);
+  document.getElementById('detailsStock').textContent = String(item.stock);
+  document.getElementById('detailsPrice').textContent = '$' + item.price.toFixed(2);
+
+  overlay.classList.add('open');
+}
+
+function closeDetails() {
+  const overlay = document.getElementById('detailsModal');
+  if (overlay) overlay.classList.remove('open');
 }
 
 /* ===== ADJUST QUANTITY ===== */
@@ -436,13 +473,16 @@ function renderCartItems() {
       <div class="cart-item-info">
         <h4>${menuName(item.id)}</h4>
         <span>$${item.price.toFixed(2)} ${t('each')}</span>
+        <div class="cart-qty">
+          <button class="cart-qty-btn" onclick="changeQty(${item.id}, -1)" aria-label="Decrease quantity">&minus;</button>
+          <span class="cart-qty-val">${item.qty}</span>
+          <button class="cart-qty-btn" onclick="changeQty(${item.id}, 1)" aria-label="Increase quantity">+</button>
+        </div>
       </div>
-      <div class="cart-item-qty">
-        <button class="qty-btn" onclick="changeQty(${item.id}, -1)" aria-label="Decrease quantity">&minus;</button>
-        <span class="qty-num">${item.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${item.id}, 1)" aria-label="Increase quantity">+</button>
+      <div class="cart-item-side">
+        <button class="cart-item-remove" onclick="removeFromCart(${item.id})" aria-label="Remove item">&times;</button>
+        <div class="cart-item-line-total">$${(item.price * item.qty).toFixed(2)}</div>
       </div>
-      <button class="cart-item-remove" onclick="removeFromCart(${item.id})" aria-label="Remove item">&times;</button>
     </div>
   `).join('');
 
@@ -465,6 +505,7 @@ function showToast(message) {
 function applyFilter(cat) {
   activeFilter = cat;
   filterBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === cat));
+  document.querySelectorAll('.cat-chip').forEach(b => b.classList.toggle('active', b.dataset.chipCat === cat));
   renderMenu(cat);
 
   // Reflect the active category in the banner heading (menu page only)
@@ -484,6 +525,12 @@ function applyFilter(cat) {
 
 filterBtns.forEach(btn => {
   btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+});
+
+// Mobile-only category chips (menu page): the top-nav category links are
+// hidden at <=768px, so these are the visible category controls on phones.
+document.querySelectorAll('.cat-chip').forEach(chip => {
+  chip.addEventListener('click', () => applyFilter(chip.dataset.chipCat));
 });
 
 // Live menu search (menu page only)
@@ -508,6 +555,47 @@ closeCart.addEventListener('click', () => {
 cartModal.addEventListener('click', (e) => {
   if (e.target === cartModal) cartModal.classList.remove('open');
 });
+
+/* Details modal: click the dimmed backdrop (outside the modal box) to close. */
+document.getElementById('detailsModal')?.addEventListener('click', (e) => {
+  if (e.target.id === 'detailsModal') closeDetails();
+});
+
+/* ===== IMAGE LIGHTBOX (menu page: tap a photo to view it full-size) ===== */
+(function initLightbox() {
+  const grid = document.getElementById('menuGrid');
+  const lightbox = document.getElementById('lightbox');
+  if (!grid || !lightbox) return; // lightbox only exists on the menu page
+  const lbImg = document.getElementById('lightboxImg');
+  const lbClose = document.getElementById('lightboxClose');
+
+  function openLightbox(src, alt) {
+    lbImg.src = src;
+    lbImg.alt = alt || '';
+    lightbox.classList.add('open');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+  }
+
+  // Delegate on the grid so it keeps working after every re-render
+  // (filter / search / language switch all rebuild the cards).
+  grid.addEventListener('click', (e) => {
+    const img = e.target.closest('.menu-item-img img');
+    if (!img) return;
+    openLightbox(img.src, img.alt);
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  // Clicking the dimmed area (anywhere outside the picture) closes it.
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  // Escape closes too.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+})();
 
 /* ===== CHECKOUT: method (pickup/delivery) + confirmation ===== */
 let shipMethod = 'pickup';
@@ -561,6 +649,7 @@ function generateOrderId() {
     <div class="modal-overlay" id="confirmOverlay">
       <div class="modal confirm-modal">
         <button class="close-btn" id="closeConfirm" aria-label="Close">&times;</button>
+        <div class="float-paws confirm-paws" aria-hidden="true"></div>
         <div class="confirm-card">
           <div class="confirm-logo" id="confirmLogo"><img src="assets/logo.png" alt="Meow Crust"></div>
           <div class="confirm-cat" id="confirmCat" hidden><img src="assets/delivery-cat.gif" alt="Meow's on the way"></div>
@@ -634,10 +723,7 @@ function showConfirmation(order) {
     confirmTitle.hidden = true;  // the GIF carries its own "Meow's on their way!!" text
     confirmSub.hidden = true;
     confirmOverlay.classList.add('delivery');
-    // purr starts as the cat GIF appears (user clicked "place order" moments ago)
-    if (catPurr) { catPurr.currentTime = 0; catPurr.play().catch(() => {}); }
   } else {
-    stopPurr();
     confirmTitle.textContent = t('confirmPickupTitle');
     confirmSub.textContent = t('confirmPickupSub');
     confirmLogo.hidden = false;
@@ -647,7 +733,11 @@ function showConfirmation(order) {
     confirmOverlay.classList.remove('delivery');
     confirmOverlay.classList.remove('loading');
   }
+  // purr plays on both pickup and delivery confirmations
+  if (catPurr) { catPurr.currentTime = 0; catPurr.play().catch(() => {}); }
   confirmOverlay.classList.add('open');
+  // spawn the floating paws (shown only in pickup mode — CSS hides them for delivery)
+  spawnConfirmPaws();
 }
 
 checkoutBtn.addEventListener('click', openCheckout);
@@ -727,6 +817,11 @@ function applyI18n() {
   // Document language
   document.documentElement.lang = lang === 'id' ? 'id' : 'en';
 
+  // Language-specific hero artwork (home page only): Indonesian swaps in
+  // assets/hero-id.jpg via the .hero-id class; English keeps assets/hero.jpg.
+  const heroSection = document.getElementById('home');
+  if (heroSection) heroSection.classList.toggle('hero-id', lang === 'id');
+
   // Dynamic content
   if (menuGrid && activeFilter) renderMenu(activeFilter);
   if (cartItemsEl && cartItemsEl.isConnected) {
@@ -751,11 +846,152 @@ if (langBtn) {
 // Apply the persisted language on load
 applyI18n();
 
+/* ===== SCROLL-REVEAL (About / Contact) =====
+   .reveal elements fade up once they enter the viewport. Gated on
+   prefers-reduced-motion: when set, reveals are added immediately so
+   nothing ever stays hidden. */
+(function initReveals() {
+  const reveals = document.querySelectorAll('.reveal');
+  if (reveals.length === 0) return;
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduced.matches || typeof IntersectionObserver === 'undefined') {
+    // No motion (or no observer support): show everything immediately.
+    reveals.forEach(el => el.classList.add('in'));
+    return;
+  }
+
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  reveals.forEach(el => io.observe(el));
+})();
+
+/* ===== FLOATING CAT PAWS (Contact section, decorative background) =====
+   Drops a handful of .float-paw spans into .float-paws and gives each its own
+   horizontal position, size, drift duration, delay, and tilt so the loop reads
+   as organic rather than a grid. Purely decorative: aria-hidden in the markup,
+   pointer-events none, and skipped entirely when prefers-reduced-motion is set
+   (the CSS also hides the layer, so nothing ever shows). */
+(function initFloatPaws() {
+  const layer = document.querySelector('#contact .float-paws');
+  if (!layer) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Paws rise to ~80% of the section, then dissolve. Travel is expressed in px
+  // (80% of the section's measured height) so the rise covers the same
+  // relative distance on any screen; re-measured on load + resize.
+  const section = document.getElementById('contact');
+  function setTravel() {
+    const h = section ? section.getBoundingClientRect().height : 500;
+    layer.style.setProperty('--paw-travel', (-h * 0.8).toFixed(1) + 'px');
+  }
+  setTravel();
+  window.addEventListener('resize', setTravel);
+
+  const COUNT = 7;
+  for (let i = 0; i < COUNT; i++) {
+    const paw = document.createElement('span');
+    paw.className = 'float-paw';
+    const size = 34 + Math.round(Math.random() * 40);       // 34–74px
+    // Left side (0–18%) or right side (74–86%) so they hug the edges, not the center
+    const onLeft = i % 2 === 0;
+    const left = onLeft ? 4 + Math.round(Math.random() * 14)
+                        : 74 + Math.round(Math.random() * 12);
+    const dur = 8 + Math.round(Math.random() * 3);           // 8–11s; fade is the last ~12% of the loop → under 2s
+    const delay = -Math.round(Math.random() * dur * 10) / 10; // negative → mid-flight start, no initial bunch
+    const rot = Math.round((Math.random() * 40) - 20);       // -20°..+20°
+    paw.style.left = left + '%';
+    paw.style.width = size + 'px';
+    paw.style.height = size + 'px';
+    paw.style.animationDuration = dur + 's';
+    paw.style.animationDelay = delay + 's';
+    paw.style.setProperty('--rot', rot + 'deg');
+    layer.appendChild(paw);
+  }
+})();
+
+/* ===== FLOATING CAT PAWS (confirmation popup, pickup only) =====
+   Same effect/asset as the "Get in Touch" paws, but inside the pickup
+   confirmation window (.confirm-paws layer, spawned once on first open —
+   the overlay is display:none until then, so the card's height can't be
+   measured any earlier). Delivery mode hides the layer in CSS (the cat
+   GIF takes over). */
+let confirmPawSpawned = false;
+function spawnConfirmPaws() {
+  const overlay = document.getElementById('confirmOverlay');
+  const layer = document.querySelector('#confirmOverlay .confirm-paws');
+  if (!overlay || !layer) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Re-measure travel on every open so the rise stays proportional to the
+  // card that's on screen. In pickup mode the paws must fade out at the
+  // order-ID box (never appear past it); in delivery mode (order-ID box
+  // hidden) we fall back to 80% of the window height. The paws layer now
+  // lives on the modal window, so travel is measured against it: paws start
+  // 8% below the window's bottom edge and rise into the box.
+  const modal = overlay.querySelector('.confirm-modal');
+  const box = document.getElementById('orderIdBox');
+  let travel;
+  if (modal && box && !box.hidden) {
+    const modalRect = modal.getBoundingClientRect();
+    const boxRect = box.getBoundingClientRect();
+    if (modalRect.height > 0 && boxRect.height > 0) {
+      // Rise to the order-ID box's BOTTOM edge (plus the 8% start offset that
+      // sits below the window), so the paws dissolve right at the box and are
+      // never seen above it.
+      const rise = (modalRect.bottom - boxRect.bottom) + 0.08 * modalRect.height;
+      travel = (-rise).toFixed(1) + 'px';
+    }
+  }
+  if (travel === undefined) {
+    const h = modal ? modal.getBoundingClientRect().height : 300;
+    travel = (-h * 0.8).toFixed(1) + 'px';
+  }
+  layer.style.setProperty('--paw-travel', travel);
+
+  if (confirmPawSpawned) return;
+  confirmPawSpawned = true;
+
+  const COUNT = 7; // spread across the window so no side is left empty
+  for (let i = 0; i < COUNT; i++) {
+    const paw = document.createElement('span');
+    paw.className = 'float-paw';
+    const size = 26 + Math.round(Math.random() * 24);       // 26–50px (smaller than the section's 34–74)
+    // Evenly slot the paws across the full width (left to right), then jitter
+    // each one within its own slot so the spread looks organic, not gridded.
+    const slot = ((i + 0.5) / COUNT) * 100;
+    const jitter = ((Math.random() * 2 - 1) * (50 / COUNT)) * 0.6;
+    const left = Math.max(3, Math.min(93, slot + jitter));  // clamp so paws stay inside the box
+    const dur = 8 + Math.round(Math.random() * 3);           // 8–11s, same as the section
+    const delay = -Math.round(Math.random() * dur * 10) / 10;
+    const rot = Math.round((Math.random() * 40) - 20);       // -20°..+20°
+    paw.style.left = left + '%';
+    paw.style.width = size + 'px';
+    paw.style.height = size + 'px';
+    paw.style.animationDuration = dur + 's';
+    paw.style.animationDelay = delay + 's';
+    paw.style.setProperty('--rot', rot + 'deg');
+    layer.appendChild(paw);
+  }
+}
+
 /* ===== NAVBAR: transparent at top, solid on scroll ===== */
 const navbar = document.querySelector('.navbar');
 
 function toggleNavState() {
-  navbar.classList.toggle('scrolled', window.scrollY > 80);
+  // Main page (non-solid navbar) flips to the white state faster (30px) so it
+  // shows up sooner; the menu page's .navbar-solid keeps the original 80px.
+  const threshold = navbar.classList.contains('navbar-solid') ? 80 : 30;
+  navbar.classList.toggle('scrolled', window.scrollY > threshold);
 }
 
 window.addEventListener('scroll', toggleNavState, { passive: true });
@@ -833,10 +1069,10 @@ toggleNavState();
 
   // Slide content is language-aware: titles come from menuName(), copy from t()
   const slideDefs = [
-    { id: 4, ctaKey: 'ctaPastries', link: 'menu.html?cat=pastries', image: 'assets/slide-butter-croissant.png', full: true, ctaClass: 'cta-right' },
-    { id: 12, ctaKey: 'ctaCakes', link: 'menu.html?cat=cakes', image: 'assets/slide-strawberry-cheesecake.png', full: true, ctaClass: 'cta-left' },
-    { id: 3, ctaKey: 'ctaBreads', link: 'menu.html?cat=breads', image: 'assets/slide-pretzel.png', full: true, ctaClass: 'cta-right' },
-    { id: 16, ctaKey: 'ctaPies', link: 'menu.html?cat=pies', image: 'assets/slide-raspberry-pie.png', full: true, ctaClass: 'cta-left' }
+    { id: 4, ctaKey: 'ctaPastries', link: 'menu.html?cat=pastries', image: 'assets/slide-butter-croissant.png', imageId: 'assets/slide-butter-croissant-id.jpg', full: true, ctaClass: 'cta-right' },
+    { id: 12, ctaKey: 'ctaCakes', link: 'menu.html?cat=cakes', image: 'assets/slide-strawberry-cheesecake.png', imageId: 'assets/slide-strawberry-cheesecake-id.jpg', full: true, ctaClass: 'cta-left' },
+    { id: 3, ctaKey: 'ctaBreads', link: 'menu.html?cat=breads', image: 'assets/slide-pretzel.png', imageId: 'assets/slide-pretzel-id.jpg', full: true, ctaClass: 'cta-right' },
+    { id: 16, ctaKey: 'ctaPies', link: 'menu.html?cat=pies', image: 'assets/slide-raspberry-pie.png', imageId: 'assets/slide-raspberry-pie-id.jpg', full: true, ctaClass: 'cta-left' }
   ];
 
   const slideCount = slideDefs.length;
@@ -856,11 +1092,15 @@ toggleNavState();
         tag: d.tagKey ? t(d.tagKey) : null,
         title: menuName(d.id),
         text: d.textKey ? t(d.textKey) : null,
-        image: d.image || item.image,
+        // Language-specific artwork: an item may carry an `imageId` to use
+        // when the active language is Indonesian (otherwise keep `image`).
+        image: lang === 'id' && d.imageId ? d.imageId : (d.image || item.image),
         cta: t(d.ctaKey),
         link: d.link,
         full: !!d.full,
-        ctaClass: d.ctaClass || ''
+        // The baked-in pill position differs per artwork, so the Indonesian
+        // art can carry its own cta class to match its button location.
+        ctaClass: lang === 'id' && d.ctaClassId ? d.ctaClassId : (d.ctaClass || '')
       };
     });
   }
@@ -913,6 +1153,9 @@ toggleNavState();
 
   function startTimer() {
     stopTimer();
+    // Auto-advance is decorative motion: don't start it when the user
+    // prefers reduced motion (manual arrows/dots still work).
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     timer = setInterval(() => show(current + 1), 5000);
   }
   function stopTimer() { if (timer) clearInterval(timer); }
