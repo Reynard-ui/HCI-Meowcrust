@@ -17,6 +17,7 @@
         <a class="logo" href="index.html"><img src="assets/logo.png" alt="Meow Crust"></a>
       </div>
       <div class="nav-side nav-side-right">
+        <a class="nav-link" data-i18n="navAll" href="menu.html?cat=all">All</a>
         <a class="nav-link" data-i18n="navPastries" href="menu.html?cat=pastries">Pastry</a>
         <a class="nav-link" data-i18n="navPies" href="menu.html?cat=pies">Pie</a>
         <a class="nav-link" data-i18n="navBreads" href="menu.html?cat=breads">Bread</a>
@@ -33,6 +34,16 @@
     <div class="menu-search">
       <span class="menu-search-icon" aria-hidden="true">🔍</span>
       <input type="search" id="menuSearch" data-i18n-ph="searchPh" placeholder="Search the menu…" aria-label="Search the menu">
+    </div>
+    <!-- Mobile-only category chips: at <=768px the nav links are hidden, so
+         these give phones a visible way to switch category / see "All". -->
+    <div class="menu-cat-chips" id="menuCatChips">
+      <button class="cat-chip" data-chip-cat="all">All</button>
+      <button class="cat-chip" data-chip-cat="breads" data-i18n="navBreads">Bread</button>
+      <button class="cat-chip" data-chip-cat="pastries" data-i18n="navPastries">Pastry</button>
+      <button class="cat-chip" data-chip-cat="pies" data-i18n="navPies">Pie</button>
+      <button class="cat-chip" data-chip-cat="cakes" data-i18n="navCakes">Cake</button>
+      <button class="cat-chip" data-chip-cat="favorites" data-i18n="navFav">♥ Favorites</button>
     </div>
     <div class="menu-grid" id="menuGrid">
       <!-- Items injected by JS -->
@@ -53,6 +64,30 @@
       <div class="cart-footer">
         <div class="cart-total"><span data-i18n="total">Total:</span> <span id="cartTotal">$0.00</span></div>
         <button class="btn btn-primary" id="checkoutBtn" data-i18n="checkout">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE LIGHTBOX (tap a menu photo to view it full-size) -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <div class="lightbox-stage">
+      <img class="lightbox-img" id="lightboxImg" alt="" />
+    </div>
+  </div>
+
+  <!-- DETAILS MODAL (per-item: name / description / stock / price) -->
+  <div class="modal-overlay" id="detailsModal">
+    <div class="modal details-modal">
+      <div class="modal-header">
+        <h2>Details</h2>
+        <button class="close-btn" onclick="closeDetails()" aria-label="Close">&times;</button>
+      </div>
+      <div class="details-body">
+        <p class="details-row"><span class="details-label">Name:</span> <span id="detailsName"></span></p>
+        <p class="details-row"><span class="details-label">Description:</span> <span id="detailsDesc"></span></p>
+        <p class="details-row"><span class="details-label">Stock:</span> <span id="detailsStock"></span></p>
+        <p class="details-row"><span class="details-label">Price:</span> <span id="detailsPrice"></span></p>
       </div>
     </div>
   </div>
