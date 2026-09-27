@@ -22,11 +22,10 @@
   --primary-dark: #46300F;   /* deep coffee */
   --secondary: #402913;      /* very dark coffee (footer, veil, overlays) */
   --accent: #F7BE64;         /* bunny yellow */
-  --sage: #5E3C1D;           /* second ring tone for the loading spinner */
   --bg: #F2F0E2;            /* cream white (dominant, 60%) */
   --bg-alt: #E2D5BE;       /* wheat beige (30%) */
   --text: #4A3216;          /* coffee ink */
-  --text-light: #8D7550;   /* muted wheat-brown */
+  --text-light: #6B5433;   /* muted wheat-brown (darkened for AA contrast on cream/white/wheat) */
   --white: #FCFBF5;        /* cream-white surface lift */
   --shadow: 0 4px 20px rgba(62,42,21,0.10);
   --shadow-lg: 0 10px 40px rgba(62,42,21,0.18);
@@ -97,7 +96,7 @@ ul {
 .btn {
   display: inline-block;
   padding: 14px 32px;
-  border-radius: 30px;
+  border-radius: 999px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -163,8 +162,11 @@ ul {
   color: var(--primary-dark);
 }
 
+/* All nav links (home + menu, every navbar state) are plain Coffee Brown
+   links — no pills. The Bunny Yellow sweep (.nav-link::after) is the
+   hover affordance on every link. */
 .navbar.navbar-solid .nav-link {
-  color: var(--text);
+  color: var(--primary);
 }
 
 .navbar.navbar-solid .nav-link:hover {
@@ -172,7 +174,7 @@ ul {
 }
 
 .navbar.navbar-solid .nav-link::after {
-  background: var(--primary);
+  background: var(--accent);
 }
 
 .logo {
@@ -202,17 +204,19 @@ ul {
 
 .nav-link {
   font-weight: 500;
-  color: var(--white);
+  color: var(--primary);
   position: relative;
   transition: var(--transition);
 }
 
-.navbar.scrolled .nav-link {
-  color: var(--text);
-}
-
-.navbar.scrolled .nav-link.nav-menu {
-  border-color: rgba(94, 60, 29, 0.45);
+/* Home page, BEFORE scrolling (transparent navbar over the hero): the
+   "Our Story", "Menu" and "Favorites" links are Bunny Yellow.
+   - :not(.navbar-solid)  -> excludes the menu page (its nav is .navbar-solid)
+   - :not(.scrolled)      -> pre-scroll only; once scrolled the solid
+                             navbar kicks in and links fall back to Coffee Brown.
+   The hover underline (.nav-link::after) is already Bunny Yellow globally. */
+.navbar:not(.navbar-solid):not(.scrolled) .nav-link {
+  color: var(--accent);
 }
 
 .nav-link::after {
@@ -230,11 +234,6 @@ ul {
   color: var(--primary);
 }
 
-/* White-ish hover while the navbar is transparent over the hero */
-.navbar:not(.scrolled) .nav-link:hover {
-  color: var(--accent);
-}
-
 .nav-link:hover::after {
   width: 100%;
 }
@@ -244,7 +243,7 @@ ul {
   color: var(--white);
   border: none;
   padding: 10px 20px;
-  border-radius: 25px;
+  border-radius: 999px;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
@@ -261,7 +260,7 @@ ul {
   color: var(--white);
   border: 1.5px solid rgba(252, 251, 245, 0.6);
   padding: 8px 13px;
-  border-radius: 25px;
+  border-radius: 999px;
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: 700;
@@ -294,15 +293,38 @@ ul {
 
 /* ===== HERO ===== */
 .hero {
+  position: relative; /* anchor for the torn-paper ::after strip at the hero's bottom */
   min-height: auto;
-  aspect-ratio: 24 / 13; /* match the 2400x1300 image — display follows the image, never stretches it */
+  aspect-ratio: 24 / 12; /* match the 2400x1200 image — display follows the image, never stretches it */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: url('assets/hero.png') center / cover no-repeat;
+  background: url('assets/hero.jpg') center / cover no-repeat;
   color: var(--white);
   padding: 0 5%;
+}
+
+/* Indonesian hero: swap in the translated artwork. Toggled by the i18n system
+   via .hero-id on the <section class="hero">. Same 2400x1200 true size —
+   identical 24/12 ratio, so no stretching. English keeps assets/hero.jpg. */
+.hero.hero-id {
+  background-image: url('assets/hero-id.jpg');
+}
+
+/* Hand-torn paper strip across the hero's bottom edge. Cream (--bg) fill so the
+   next section reads as the next sheet of paper showing through; the ragged peaks
+   pull back to let a sliver of hero artwork show, mimicking torn fibres.
+   Sits above the background (z:1) but below nav/overlays. Works over EN + ID art. */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -16px;
+  height: 76px;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1440' height='48' viewBox='0 0 1440 48' preserveAspectRatio='none'%3E%3Cpath d='M0,48 L0,32 C150,22 260,41 400,31 C500,24 560,43 680,34 C760,27 830,20 930,32 C1020,42 1100,26 1210,35 C1290,43 1370,27 1440,31 L1440,48 Z' fill='%23F2F0E2'/%3E%3C/svg%3E") bottom center / 100% 100% no-repeat;
 }
 
 .hero-eyebrow {
@@ -315,7 +337,7 @@ ul {
   background: rgba(247,190,100,0.18);
   border: 1px solid rgba(247,190,100,0.5);
   padding: 6px 16px;
-  border-radius: 20px;
+  border-radius: 999px;
   margin-bottom: 18px;
   text-shadow: 0 1px 6px rgba(64,41,19,0.6);
 }
@@ -352,7 +374,7 @@ ul {
   background: var(--white);
   border: 2px solid var(--bg-alt);
   padding: 8px 22px;
-  border-radius: 25px;
+  border-radius: 999px;
   cursor: pointer;
   font-weight: 600;
   color: var(--text);
@@ -439,15 +461,7 @@ ul {
   100% { transform: scale(1.12); }
 }
 
-/* "♥ Favorites" nav link stands out in the accent color */
-.nav-link.nav-fav {
-  color: var(--accent);
-}
-
-.navbar.scrolled .nav-fav,
-.navbar.navbar-solid .nav-fav {
-  color: var(--primary-dark);
-}
+/* "♥ Favorites" is now treated like the other nav links (no accent color) */
 
 .menu-item-img img {
   width: 100%;
@@ -468,9 +482,19 @@ ul {
 }
 
 .menu-item-body h3 {
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   color: var(--secondary);
   margin-bottom: 6px;
+}
+
+/* Urgency indicator — "Only X left in stock" (hardcoded for low-stock items).
+   Dark red, DM Sans; sized between the description (0.88rem) and the price (1.15rem). */
+.menu-item-body .stock-note {
+  color: #C62828;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 6px;
 }
 
 .menu-item-body .description {
@@ -487,7 +511,7 @@ ul {
 }
 
 .price {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--primary);
 }
@@ -497,7 +521,7 @@ ul {
   color: var(--white);
   border: none;
   padding: 8px 18px;
-  border-radius: 20px;
+  border-radius: 999px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.9rem;
@@ -508,39 +532,170 @@ ul {
   background: var(--primary-dark);
 }
 
+/* Two buttons on the right of the card footer: Details (outline) + Add to Basket (solid).
+   Details sits to the LEFT of Add to Basket, styled to match the add-to-cart button. */
+.menu-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.details-btn {
+  background: var(--white);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.details-btn:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+/* ===== DETAILS MODAL ===== */
+/* Reuses .modal-overlay + .modal for the dimmed backdrop, pop-in, and sizing.
+   Title in Genty Sans, centered; all other text in DM Sans. */
+.details-modal {
+  max-width: 460px;
+}
+
+.details-modal .modal-header h2 {
+  font-family: var(--font-heading); /* Genty Sans */
+  font-weight: 400;
+  text-align: center;
+}
+
+.details-body {
+  padding: 20px 28px;
+  font-family: var(--font-body); /* DM Sans */
+}
+
+.details-row {
+  font-size: 0.98rem;
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.details-row .details-label {
+  font-weight: 700;
+  color: var(--secondary);
+}
+
 /* ===== ABOUT ===== */
 .about-section {
-  background: var(--bg-alt);
+  position: relative; /* anchor for the torn-paper ::before (top) and ::after (bottom) */
+  background: var(--bg-alt) url('assets/about-bg.png') center / auto no-repeat;
+}
+
+/* ===== HAND-TORN PAPER EDGES — "Our Story" (#about), main page only =====
+   Paper-like shape: broad soft waves broken by a few thin sharp spikes,
+   varied depth and rhythm. Top and bottom use two DIFFERENT jag patterns
+   so they don't read as copy-pasted.
+   ::before hangs a cream (#F2F0E2, the "Fresh From the Oven" sheet above)
+   tear down through the top edge; ::after lifts a warm-white (#FCFBF5,
+   the "Get in Touch" sheet below) tear up through the bottom edge — each
+   colored to the section BEYOND the tear, so it looks like the next sheet
+   of paper showing through. .about-section only exists in index.html,
+   so the menu page is untouched. */
+.about-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -16px;
+  height: 76px;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1440' height='48' viewBox='0 0 1440 48' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L0,25 C5,25 8,25 13,25 C20,25 22,23 29,23 C35,23 37,22 43,22 C50,22 53,22 60,22 C65,22 68,22 73,22 C79,22 81,22 87,22 C94,22 97,22 104,22 C109,22 112,24 117,24 C125,24 128,24 136,24 C144,24 148,27 156,27 C166,27 169,29 179,29 C187,29 190,29 198,29 C206,29 210,30 218,30 C227,30 231,32 240,32 C248,32 251,31 259,31 C267,31 270,31 278,31 C286,31 289,31 297,31 C306,31 310,30 319,30 C324,30 326,29 331,29 C338,29 341,29 348,29 C353,29 355,29 360,29 C366,29 369,28 375,28 C384,28 388,26 397,26 C402,26 404,23 409,23 C419,23 423,21 433,21 C442,21 445,22 454,22 C460,22 463,22 469,22 C474,22 476,22 481,22 C489,22 492,22 500,22 C507,22 509,22 516,22 C521,22 524,24 529,24 C538,24 542,26 551,26 C559,26 563,27 571,27 C577,27 580,27 586,27 C593,27 595,28 602,28 C609,28 611,29 618,29 C626,29 629,30 637,30 C643,30 646,30 652,30 C659,30 662,32 669,32 C677,32 679,31 687,31 C692,31 693,32 698,32 C704,32 706,31 712,31 C720,31 723,28 731,28 C738,28 741,26 748,26 C756,26 758,25 766,25 C774,25 777,25 785,25 C795,25 798,24 808,24 C815,24 817,22 824,22 C830,22 833,22 839,22 C848,22 851,23 860,23 C866,23 868,22 874,22 C880,22 883,24 889,24 C895,24 898,24 904,24 C911,24 914,27 921,27 C930,27 934,29 943,29 C949,29 952,29 958,29 C967,29 970,29 979,29 C985,29 988,30 994,30 C1001,30 1004,31 1011,31 C1017,31 1020,32 1026,32 C1034,32 1037,31 1045,31 C1054,31 1057,32 1066,32 C1076,32 1079,29 1089,29 C1099,29 1103,29 1113,29 C1118,29 1121,26 1126,26 C1134,26 1137,24 1145,24 C1151,24 1153,23 1159,23 C1166,23 1168,23 1175,23 C1180,23 1182,22 1187,22 C1194,22 1197,23 1204,23 C1211,23 1214,22 1221,22 C1229,22 1231,22 1239,22 C1246,22 1249,21 1256,21 C1262,21 1265,23 1271,23 C1276,23 1279,25 1284,25 C1294,25 1297,25 1307,25 C1315,25 1319,27 1327,27 C1335,27 1339,29 1347,29 C1356,29 1359,29 1368,29 C1377,29 1380,30 1389,30 C1394,30 1397,32 1402,32 C1411,32 1414,32 1423,32 C1430,32 1433,32 1440,32 L1440,0 Z' fill='%23F2F0E2'/%3E%3C/svg%3E") top center / 100% 100% no-repeat;
+
+}
+
+.about-section::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -16px;
+  height: 76px;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1440' height='48' viewBox='0 0 1440 48' preserveAspectRatio='none'%3E%3Cpath d='M0,48 L0,23 C7,23 10,22 17,22 C25,22 27,22 35,22 C41,22 44,22 50,22 C57,22 59,22 66,22 C72,22 75,22 81,22 C86,22 89,24 94,24 C101,24 104,25 111,25 C119,25 123,24 131,24 C140,24 144,27 153,27 C163,27 166,30 176,30 C183,30 185,31 192,31 C198,31 200,32 206,32 C215,32 219,34 228,34 C237,34 241,33 250,33 C255,33 256,34 261,34 C268,34 271,33 278,33 C283,33 285,34 290,34 C298,34 302,33 310,33 C316,33 319,33 325,33 C331,33 334,30 340,30 C349,30 353,28 362,28 C370,28 373,26 381,26 C387,26 389,25 395,25 C403,25 405,23 413,23 C421,23 423,23 431,23 C436,23 439,22 444,22 C449,22 452,22 457,22 C466,22 470,22 479,22 C486,22 489,22 496,22 C505,22 509,23 518,23 C526,23 530,25 538,25 C545,25 547,27 554,27 C560,27 563,29 569,29 C576,29 578,31 585,31 C590,31 593,33 598,33 C603,33 606,34 611,34 C617,34 620,34 626,34 C635,34 639,35 648,35 C656,35 660,34 668,34 C678,34 682,33 692,33 C701,33 705,31 714,31 C719,31 721,32 726,32 C731,32 734,28 739,28 C746,28 748,26 755,26 C763,26 765,25 773,25 C778,25 781,24 786,24 C791,24 794,22 799,22 C809,22 812,22 822,22 C830,22 834,22 842,22 C847,22 850,22 855,22 C864,22 868,22 877,22 C882,22 885,22 890,22 C897,22 900,23 907,23 C915,23 919,26 927,26 C936,26 940,29 949,29 C954,29 957,31 962,31 C970,31 972,31 980,31 C989,31 993,34 1002,34 C1007,34 1009,34 1014,34 C1022,34 1025,35 1033,35 C1043,35 1046,35 1056,35 C1066,35 1069,33 1079,33 C1088,33 1092,32 1101,32 C1108,32 1110,32 1117,32 C1123,32 1126,29 1132,29 C1142,29 1145,27 1155,27 C1164,27 1167,25 1176,25 C1184,25 1187,22 1195,22 C1201,22 1203,22 1209,22 C1217,22 1221,22 1229,22 C1234,22 1235,22 1240,22 C1245,22 1247,22 1252,22 C1257,22 1259,22 1264,22 C1272,22 1276,22 1284,22 C1289,22 1291,25 1296,25 C1304,25 1306,27 1314,27 C1322,27 1325,27 1333,27 C1338,27 1341,29 1346,29 C1353,29 1356,30 1363,30 C1372,30 1376,32 1385,32 C1395,32 1398,34 1408,34 C1416,34 1420,35 1428,35 C1433,35 1435,34 1440,34 L1440,48 Z' fill='%23FCFBF5'/%3E%3C/svg%3E") bottom center / 100% 100% no-repeat;
+
 }
 
 .about-content {
   display: flex;
   align-items: center;
   gap: 60px;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
+/* LEFT: container for the new artwork — 40% column. Drop an <img> in here.
+   Until the art is added, shows a light dashed placeholder so the slot is obvious. */
+.about-art {
+  flex: 0 0 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  border: 2px dashed rgba(94, 60, 29, 0.35);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+}
+
+.about-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.about-art-hint {
+  font-family: var(--font-hand);
+  color: var(--text-light);
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+
+/* RIGHT: 60% column. Title + paragraphs + stats, all center-aligned. */
 .about-text {
   flex: 1;
+  text-align: center;
 }
 
 .about-text p {
   margin-bottom: 16px;
-  color: var(--text-light);
+  color: var(--text);
   font-size: 1.05rem;
 }
 
+/* Single row of four stat boxes (was 2x2) */
 .about-stats {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Bunny-yellow line icon above each stat number */
+.stat-icon {
+  display: block;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 10px;
+  color: var(--accent); /* #F7BE64 */
 }
 
 .stat {
   background: var(--white);
   border-radius: var(--radius);
-  padding: 24px;
+  padding: 20px 14px;
   text-align: center;
   box-shadow: var(--shadow);
 }
@@ -559,15 +714,66 @@ ul {
 
 /* ===== CONTACT ===== */
 .contact-section {
+  position: relative; /* anchor for the floating paw layer */
+  overflow: hidden;    /* clip paws so they don't spill into neighboring sections */
   background: var(--white);
 }
 
+/* Floating cat-paw layer — decorative only, sits BEHIND the text. JS (initFloatPaws)
+   spawns .float-paw spans here; each drifts upward on its own delay and fades in
+   from the bottom, then out at the top (soft loop). Hidden entirely when
+   prefers-reduced-motion is set (see @media below) and in the reduced-motion JS guard. */
+.float-paws {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.float-paw {
+  position: absolute;
+  bottom: -8%;
+  width: 46px;
+  height: 46px;
+  opacity: 0;
+  background: url('assets/float-cat-paw.png') center / contain no-repeat;
+  will-change: transform, opacity;
+  animation: pawFloat linear infinite;
+}
+
+/* Paws rise to ~80% of the section, then dissolve out fast.
+   Travel distance is set by JS (--paw-travel = -80% of the section's
+   measured height, in px) so the rise covers the same relative distance
+   on any screen. Opacity holds, then fades during the final ~12% of the
+   loop; with the 8–11s durations JS assigns that fade is under 2s per paw.
+   Both ends are opacity:0 so the loop reset is invisible. */
+@keyframes pawFloat {
+  0%   { opacity: 0; transform: translateY(0) rotate(var(--rot, -8deg)); }
+  15%  { opacity: 0.5; }
+  88%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(var(--paw-travel, -32vh)) rotate(var(--rot, -8deg)); }
+}
+
+/* No decorative motion: hide the whole layer. */
+@media (prefers-reduced-motion: reduce) {
+  .float-paws { display: none; }
+}
+
 .contact-grid {
+  position: relative;
+  z-index: 1; /* above the decorative paw layer */
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   max-width: 900px;
   margin: 0 auto;
+}
+
+/* The section title is a static direct child, so lift it above the paws too */
+.contact-section > .section-title {
+  position: relative;
+  z-index: 1;
 }
 
 .contact-info p {
@@ -661,13 +867,14 @@ ul {
 .cart-items {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 28px;
+  padding: 12px 28px;
 }
 
 .cart-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid var(--bg-alt);
 }
@@ -676,65 +883,104 @@ ul {
   border-bottom: none;
 }
 
+/* left column: name (on top, slightly bigger), unit price, then quantity */
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* name + price read as one group */
+  align-items: flex-start;
+}
+
 .cart-item-info h4 {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: var(--secondary);
 }
 
 .cart-item-info span {
   font-size: 0.85rem;
   color: var(--text-light);
+  margin-bottom: 18px; /* more space between the price and the qty pill below */
 }
 
-.cart-item-remove {
-  background: none;
-  border: none;
-  color: var(--accent);
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: var(--transition);
-}
-
-.cart-item-remove:hover {
-  transform: scale(1.2);
-}
-
-.cart-item-qty {
+/* quantity control: [−] [number] [+] — every element locked to the same 26px height
+   and flex-centered, so the −, number, and + stay visually on one line by construction */
+.cart-qty {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-right: 10px;
+  gap: 10px;
+  margin-bottom: 0;
 }
 
-.qty-btn {
+.cart-qty-btn {
   width: 26px;
   height: 26px;
   border-radius: 50%;
   border: 1.5px solid var(--bg-alt);
-  background: var(--white);
-  color: var(--secondary);
+  background: var(--bg-alt);
+  color: var(--primary-dark);
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition);
   padding: 0;
+  transition: var(--transition);
 }
 
-.qty-btn:hover {
+.cart-qty-btn:hover {
   border-color: var(--primary);
   background: var(--primary);
   color: var(--white);
 }
 
-.qty-num {
-  min-width: 22px;
+/* double selector on purpose: the value is a <span>, so the broader
+   ".cart-item-info span" rule (0.85rem / muted color / 8px bottom margin) would
+   otherwise override these — ".cart-qty .cart-qty-val" beats it */
+.cart-qty .cart-qty-val {
+  width: 34px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  line-height: 1;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--primary-dark);
-  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+/* right column: "x" stays in the top-right corner; the item's total is pushed to
+   the bottom of the row */
+.cart-item-side {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: space-between;
+}
+
+.cart-item-remove {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: var(--transition);
+  align-self: flex-end; /* top-right corner */
+}
+
+.cart-item-remove:hover {
+  transform: scale(1.2);
+  color: var(--primary-dark);
+}
+
+.cart-item-line-total {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  align-self: flex-start;
+  margin-left: -90px; /* nudge further left */
 }
 
 .cart-footer {
@@ -809,7 +1055,7 @@ footer p {
   background: var(--primary);
   color: var(--white);
   font-weight: 600;
-  border-radius: 25px;
+  border-radius: 999px;
   transition: var(--transition);
 }
 
@@ -824,10 +1070,53 @@ footer p {
 }
 
 /* ===== MENU SEARCH ===== */
+/* Section rhythm: 50px below the block, matching .section-title */
 .menu-search {
   position: relative;
   max-width: 560px;
-  margin: 0 auto 36px;
+  margin: 0 auto 50px;
+}
+
+/* ===== MOBILE CATEGORY CHIPS (menu page) =====
+   Visible ONLY at <=768px, where the top-nav category links are hidden.
+   Keeps phones from dead-ending on the menu page (no way to switch
+   category or reach "All"). */
+.menu-cat-chips {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-cat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+}
+
+.cat-chip {
+  background: var(--white);
+  border: 1.5px solid var(--bg-alt);
+  color: var(--text);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cat-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.cat-chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
 }
 
 .menu-search-icon {
@@ -848,7 +1137,7 @@ footer p {
   color: var(--text);
   background: var(--white);
   border: 1.5px solid var(--bg-alt);
-  border-radius: 30px;
+  border-radius: 999px;
   box-shadow: var(--shadow);
   outline: none;
   transition: border-color var(--transition), box-shadow var(--transition);
@@ -859,7 +1148,6 @@ footer p {
 #menuSearch::placeholder {
   color: var(--primary);
   opacity: 0.65;
-  font-family: var(--font-hand);
 }
 
 #menuSearch:focus {
@@ -872,31 +1160,8 @@ footer p {
   appearance: none;
 }
 
-/* Single "Menu" link on the home navbar — gentle pill so it reads as the entry point */
-.nav-link.nav-menu {
-  padding: 7px 16px;
-  border: 1.5px solid rgba(252, 251, 245, 0.55);
-  border-radius: 999px;
-}
-
-.nav-link.nav-menu::after {
-  display: none; /* no underline sweep on a pill */
-}
-
-/* "Our Story" link sits right of the logo on the home navbar — same pill treatment */
-.nav-link.nav-story {
-  padding: 7px 16px;
-  border: 1.5px solid rgba(252, 251, 245, 0.55);
-  border-radius: 999px;
-}
-
-.nav-link.nav-story::after {
-  display: none;
-}
-
-.navbar.scrolled .nav-link.nav-story {
-  border-color: rgba(94, 60, 29, 0.45);
-}
+/* Home navbar links are plain text with the Bunny Yellow underline sweep
+   (same treatment as every other nav link — no pills). */
 
 /* ===== WIDER NAV (category links) ===== */
 @media (max-width: 1200px) {
@@ -949,6 +1214,7 @@ footer p {
 }
 
 .footer-block p {
+  font-family: var(--font-body); /* DM Sans — overrides the Kalam global footer p */
   font-size: 0.85rem;
   color: var(--bg);
   opacity: 0.85;
@@ -996,6 +1262,85 @@ body.veil-closed .page-veil {
   }
 }
 
+/* ===== STAT CARDS: gentle hover lift (Our Story) ===== */
+.stat {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat:hover {
+  transform: scale(1.06);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== MENU CARD ENTRANCE ===== */
+/* Staggered fade-up when the grid re-renders (filter/search). */
+.menu-item {
+  animation: cardIn 0.3s ease backwards;
+  /* index set inline via style="--i" in renderMenu() */
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== SCROLL-REVEAL (About / Contact) =====
+   The hidden state only applies when JS is on (html.js, set by the inline
+   script in index.html's <head>). .in is added by the IntersectionObserver.
+   Without JS the content is always visible. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== REDUCED MOTION: disable ALL decorative motion, keep content visible ===== */
+@media (prefers-reduced-motion: reduce) {
+  .menu-item {
+    animation: none;
+  }
+
+  .slide {
+    transition: none; /* slideshow still works, just doesn't glide */
+  }
+
+  .js .reveal,
+  .js .reveal.in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .stat:hover {
+    transform: none;
+  }
+}
+
+/* ===== SLIDE CTA POSITION MAP (keep in sync with the artwork) =====
+   The full-bleed slides (.slide-full) overlay a real button ON TOP of a
+   pill baked into each 16:9 artwork. The pixel positions below are only
+   valid for the EXACT artwork files listed — swapping an image without
+   re-measuring will leave the button floating over nothing.
+
+   assets/slide-butter-croissant.png        → .cta-right   (left 64.4%, top 78.8%)
+   assets/slide-pretzel.png                → .cta-right   (left 64.4%, top 78.8%)
+   assets/slide-strawberry-cheesecake.png   → .cta-left    (left 14.8%, top 79.5%)
+   assets/slide-raspberry-pie.png          → .cta-left    (left 14.8%, top 79.5%)
+   assets/slide-butter-croissant-id.jpg    → .cta-right   (same position/size as English)
+   assets/slide-strawberry-cheesecake-id.jpg → .cta-left  (same position/size as English)
+   assets/slide-pretzel-id.jpg             → .cta-right   (same position/size as English)
+   assets/slide-raspberry-pie-id.jpg       → .cta-left    (same position/size as English)
+
+   To replace an asset: re-export it with the CTA pill in the same slot,
+   OR update the matching cta-right / cta-left values below.
+   Also keep the pill's outer size (17.24% x 7.41%) matched to the new art. */
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .nav-link {
@@ -1008,6 +1353,16 @@ body.veil-closed .page-veil {
 
   .about-content {
     flex-direction: column;
+  }
+
+  .about-art {
+    flex: none;
+    width: 100%;
+    min-height: 280px;
+  }
+
+  .about-stats {
+    grid-template-columns: 1fr 1fr;
   }
 
   .contact-grid {
@@ -1064,7 +1419,7 @@ body.veil-closed .page-veil {
 
 .ship-option.active {
   border-color: var(--primary);
-  background: rgba(247,190,100,0.12);
+  background: rgba(247,190,100,0.30); /* lighter shade of Bunny Yellow when picked */
   box-shadow: var(--shadow);
   transform: translateY(-2px);
 }
@@ -1098,7 +1453,7 @@ body.veil-closed .page-veil {
 
 /* ===== SPOTLIGHT SLIDESHOW ===== */
 .slideshow-section {
-  background: var(--bg);
+  background: var(--bg) url('assets/recommendation-bg.png') center / auto no-repeat;
 }
 
 .slideshow {
@@ -1192,7 +1547,7 @@ body.veil-closed .page-veil {
   color: var(--primary);
   background: rgba(247,190,100,0.14);
   padding: 4px 14px;
-  border-radius: 20px;
+  border-radius: 999px;
 }
 
 .slide-body h3 {
@@ -1353,7 +1708,8 @@ body.veil-closed .page-veil {
 
 /* delivery mode: give the cat GIF more breathing room */
 #confirmOverlay.delivery .confirm-modal {
-  max-width: 560px;
+  max-width: 616px; /* 560px +10% */
+  padding-top: 51px; /* top 48px + 3px */
 }
 
 .confirm-modal .close-btn {
@@ -1364,6 +1720,7 @@ body.veil-closed .page-veil {
 }
 
 .confirm-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1374,7 +1731,7 @@ body.veil-closed .page-veil {
 
 /* delivery mode: give the cat GIF more breathing room */
 #confirmOverlay.delivery .confirm-card {
-  max-width: 480px;
+  max-width: 528px; /* 480px +10% */
 }
 
 @keyframes confirmIn {
@@ -1391,7 +1748,6 @@ body.veil-closed .page-veil {
   justify-content: center;
   background: var(--white);
   border-radius: 14px;
-  box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
 
@@ -1405,13 +1761,32 @@ body.veil-closed .page-veil {
 .confirm-logo[hidden],
 .confirm-cat[hidden] { display: none; }
 
-/* delivery confirmation: walking cat GIF (transparent bg, carries its own caption) */
+/* delivery confirmation: walking cat GIF (portrait 2:3 asset, carries its own caption) */
 .confirm-cat {
-  width: 420px;
-  height: 420px;
+  width: 396px;
+  height: 594px;
+  margin-left: 7px; /* nudge the gif slightly to the right (was 10px, -3px) */
+  margin-top: -70px; /* nudge the gif up */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* floating cat paws inside the pickup confirmation popup: same effect/asset as the
+   "Get in Touch" section (JS initConfirmPaws spawns them). Delivery mode shows the
+   cat GIF instead, so the paws layer is hidden there. The card's content is lifted
+   above the paw layer so the paws read as a background. */
+#confirmOverlay .confirm-paws {
+  z-index: 0;
+}
+
+#confirmOverlay:not(.delivery) .confirm-card > :not(.confirm-paws) {
+  position: relative;
+  z-index: 1;
+}
+
+#confirmOverlay.delivery .confirm-paws {
+  display: none;
 }
 
 .confirm-cat img {
@@ -1428,7 +1803,7 @@ body.veil-closed .page-veil {
 
 /* small screens: shrink the cat box so it never overflows */
 @media (max-width: 520px) {
-  .confirm-cat { width: 260px; height: 260px; }
+  .confirm-cat { width: 230px; height: 345px; margin-left: 12px; }
   #confirmOverlay.delivery .confirm-card { max-width: 300px; }
 }
 
@@ -1444,7 +1819,7 @@ body.veil-closed .page-veil {
   border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: var(--accent);
-  border-right-color: var(--sage);
+  border-right-color: var(--primary);
   animation: ringSpin 1s linear infinite;
 }
 
@@ -1499,8 +1874,88 @@ body.veil-closed .page-veil {
 }
 
 .confirm-home {
-  margin-top: 10px;
+  margin-top: -50px;
   width: 100%;
-  max-width: 240px;
+  max-width: 228px; /* 240px - 5% */
   text-align: center;
+}
+
+/* pickup confirmation only: the button sits lower than delivery (delivery keeps -50px) */
+#confirmOverlay:not(.delivery) .confirm-home {
+  margin-top: 10px;
+}
+
+/* ===== IMAGE LIGHTBOX (menu page: full-size photo pop-up) ===== */
+/* Fixed dimmed overlay. Sits above the page-veil (z-3000) so it's on top. */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(46, 32, 16, 0.72); /* dims + darkens everything behind */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+
+.lightbox.open {
+  display: flex;
+  animation: lightboxIn 0.25s ease;
+}
+
+/* Consistent frame for EVERY image: same box + object-fit:contain, so
+   landscape and portrait photos always render at the same size (letterboxed). */
+.lightbox-stage {
+  position: relative;
+  width: min(90vw, 720px);
+  aspect-ratio: 4 / 3;
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.lightbox-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* whole image always visible, never stretched */
+  display: block;
+}
+
+/* "x" button: top-right corner of the overlay, floating in the dimmed area
+   — i.e. OUTSIDE the picture, not overlapping it. */
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(252, 251, 245, 0.9);
+  color: var(--secondary);
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.lightbox-close:hover {
+  background: var(--accent);
+  color: var(--primary-dark);
+  transform: scale(1.08);
+}
+
+/* Signal that the menu photos are tappable. */
+.menu-item-img img {
+  cursor: zoom-in;
+}
+
+@keyframes lightboxIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
