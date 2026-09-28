@@ -1710,6 +1710,7 @@ body.veil-closed .page-veil {
 #confirmOverlay.delivery .confirm-modal {
   max-width: 616px; /* 560px +10% */
   padding-top: 51px; /* top 48px + 3px */
+  max-height: 96vh; /* raised 80vh -> 96vh so the bigger gif fits inside the box */
 }
 
 .confirm-modal .close-btn {
@@ -1764,7 +1765,7 @@ body.veil-closed .page-veil {
 /* delivery confirmation: walking cat GIF (portrait 2:3 asset, carries its own caption) */
 .confirm-cat {
   width: auto;
-  height: min(594px, calc(80vh - 150px)); /* fits inside the 80vh box cap: 594 on tall screens, shrinks on short laptops */
+  height: min(861px, calc(96vh - 150px)); /* cap raised 20% (80vh -> 96vh budget); still fits the box */
   max-width: 100%;      /* never wider than the box on narrow screens */
   aspect-ratio: 2 / 3;  /* 1280x1920 asset — box stays true aspect when it scales */
   margin-left: 7px; /* nudge the gif slightly to the right (was 10px, -3px) */
@@ -1876,7 +1877,7 @@ body.veil-closed .page-veil {
 }
 
 .confirm-home {
-  margin-top: -50px;
+  margin-top: -20px; /* another 10px up; note: now 6px into the gif's bottom edge */
   width: 100%;
   max-width: 228px; /* 240px - 5% */
   text-align: center;
@@ -1884,7 +1885,7 @@ body.veil-closed .page-veil {
 
 /* delivery-only: scale the button with the gif so the group stays proportional on short screens */
 #confirmOverlay.delivery .confirm-home {
-  max-width: min(228px, calc((80vh - 150px) * 0.3838)); /* 228/594 = same scale factor as the gif */
+  max-width: min(228px, calc((96vh - 150px) * 0.3838)); /* same scale factor as the gif; budget raised 80vh -> 96vh */
 }
 
 /* pickup confirmation only: the button sits lower than delivery (delivery keeps -50px) */
