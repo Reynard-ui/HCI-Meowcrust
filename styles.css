@@ -1763,10 +1763,12 @@ body.veil-closed .page-veil {
 
 /* delivery confirmation: walking cat GIF (portrait 2:3 asset, carries its own caption) */
 .confirm-cat {
-  width: 396px;
-  height: 594px;
+  width: auto;
+  height: min(594px, calc(80vh - 150px)); /* fits inside the 80vh box cap: 594 on tall screens, shrinks on short laptops */
+  max-width: 100%;      /* never wider than the box on narrow screens */
+  aspect-ratio: 2 / 3;  /* 1280x1920 asset — box stays true aspect when it scales */
   margin-left: 7px; /* nudge the gif slightly to the right (was 10px, -3px) */
-  margin-top: -70px; /* nudge the gif up */
+  margin-top: -50px; /* was -70px; -50 keeps the gif inside the box's top edge */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1803,7 +1805,7 @@ body.veil-closed .page-veil {
 
 /* small screens: shrink the cat box so it never overflows */
 @media (max-width: 520px) {
-  .confirm-cat { width: 230px; height: 345px; margin-left: 12px; }
+  .confirm-cat { height: min(345px, 55vh); margin-left: 12px; } /* width auto, keeps 2:3 */
   #confirmOverlay.delivery .confirm-card { max-width: 300px; }
 }
 
@@ -1878,6 +1880,11 @@ body.veil-closed .page-veil {
   width: 100%;
   max-width: 228px; /* 240px - 5% */
   text-align: center;
+}
+
+/* delivery-only: scale the button with the gif so the group stays proportional on short screens */
+#confirmOverlay.delivery .confirm-home {
+  max-width: min(228px, calc((80vh - 150px) * 0.3838)); /* 228/594 = same scale factor as the gif */
 }
 
 /* pickup confirmation only: the button sits lower than delivery (delivery keeps -50px) */
